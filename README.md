@@ -1,1 +1,2 @@
-# curriculum-design-of-compile-principles
+# front end of c-minus compiler
+# flex and bison
