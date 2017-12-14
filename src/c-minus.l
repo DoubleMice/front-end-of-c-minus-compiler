@@ -65,25 +65,44 @@ int			{return INT;}
 
 
 int main(int argc,char *argv[]) {
-	int token = -1,last_token = -1;
-	void *symbol,*ttable;
-	int poolsz = 4*1024;
+	int token = -1;
+	Token_Table *tthead = NULL,*ttable = NULL,*last_ttable = NULL;
+	CM_Sym *symbolhead = NULL,*symbol = NULL;
+	int poolsz = 32*512;
+	uint canary;
 	if (!(ttable = (Token_Table*)malloc(poolsz))) { printf("could not malloc(%d) token area\n",poolsz); return -1; }
 	if (!(symbol = (CM_Sym*)malloc(poolsz))) { printf("could not malloc(%d) symbol area\n",poolsz); return -1; }
 	memset(ttable,0,poolsz);
 	memset(symbol,0,poolsz);
+	tthead = ttable;
+	symbolhead = symbol;
 	init_scaner();
-	while(token = yylex()) {
+	while(token = yylex()&&(canary < poolsz) ) {
+		if(yyleng <= TOKEN_LENGTH) {
+			strncpy(ttable->TT_value,yytext);
+			ttable->TT_Type = token;
+			ttable->Next = ttable + 1;
+		}
+		else {
+			printf("token(%s) is too long\n",yytext);
+			return -1;
+		}
 		switch(token) {
+			case LB:
+				if(last_ttable&&(last_ttable->TT_Type == ID))
+					last_ttable->TT_Type = FUNC;
+				break;
 			case ID:
-				;
-			case VOID:;
-			case IF:;
-			case ELSE:;
-			case WHILE:;
+				symbol = ST_Add(symbol,yytext,bind,token);
+				break;
+			default:
+				break;
 		}
 		print_token(token);
 		puts(yytext);
+		last_ttable = ttable;
+		ttable += 1;
+		canary = (uint)(&ttable - &tthead);
 	}
 	return 0;
 }
