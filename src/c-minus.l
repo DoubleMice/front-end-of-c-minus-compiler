@@ -2,8 +2,9 @@
 
 /* manifest constants */
 %{
-	/*#include "symbol.h"*/
+	#include "symbol.h"
 	#include "token.h"
+	#include <memory.h>
 	int cur_line = 1;
 	void init_scaner();
 %}
@@ -16,6 +17,7 @@ digit   [0-9]
 id      {letter}({letter}|{digit})*
 /* number  {digit}+(\.{digit}+)?(E(+-)?{digit}+)? */
 number  {digit}+
+func	{id}"("
 
 comment	"/*"[^"*/"]*"*/"
 
@@ -55,14 +57,31 @@ void		{return VOID;}
 while		{return WHILE;}
 int			{return INT;}
 
+{func}		{return FUNC;}
 {id}		{return ID;}
 {number}	{return NUM;}
 %%
 
+
+
 int main(int argc,char *argv[]) {
-	int token;
+	int token = -1,last_token = -1;
+	void *symbol,*ttable;
+	int poolsz = 4*1024;
+	if (!(ttable = (Token_Table*)malloc(poolsz))) { printf("could not malloc(%d) token area\n",poolsz); return -1; }
+	if (!(symbol = (CM_Sym*)malloc(poolsz))) { printf("could not malloc(%d) symbol area\n",poolsz); return -1; }
+	memset(ttable,0,poolsz);
+	memset(symbol,0,poolsz);
 	init_scaner();
 	while(token = yylex()) {
+		switch(token) {
+			case ID:
+				;
+			case VOID:;
+			case IF:;
+			case ELSE:;
+			case WHILE:;
+		}
 		print_token(token);
 		puts(yytext);
 	}
