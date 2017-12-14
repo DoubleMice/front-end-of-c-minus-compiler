@@ -19,6 +19,9 @@ id      {letter}({letter}|{digit})*
 number  {digit}+
 func	{id}"("
 
+addop	"+"|"-"
+mulop	"*"|"/"
+vartype	"int"|"void"
 comment	"/*"[^"*/"]*"*/"
 
 /* match regular */
@@ -30,16 +33,13 @@ comment	"/*"[^"*/"]*"*/"
 {ws}   		{/* space filter */}
 {comment}	{/* comment filter */}
 
-"+"			{return PLUS;}
-"-"			{return MINUS;}
-"*"			{return MULTI;}
-"/"			{return DEVIDE;}
-"<"			{return LT;}
-"<="		{return LE;}
-">"			{return GT;}
-">="		{return GE;}
-"=="		{return SAME;}
-"!="		{return NE;}
+{addop}			{return ADDOP;}
+{mulop}			{return MULOP;}
+">="			{return RELOP;}
+"<="			{return RELOP;}
+"=="			{return RELOP;}
+">"				{return RELOP;}
+"<"				{return RELOP;}
 "="			{return EQ;}
 ";"			{return SEMI;}
 ","			{return COMMA;}
@@ -53,9 +53,7 @@ comment	"/*"[^"*/"]*"*/"
 if      	{return IF;}
 else		{return ELSE;}
 return		{return RETURN;}
-void		{return VOID;}
 while		{return WHILE;}
-int			{return INT;}
 
 {func}		{return FUNC;}
 {id}		{return ID;}
@@ -79,7 +77,7 @@ int main(int argc,char *argv[]) {
 	init_scaner();
 	while(token = yylex()&&(canary < poolsz) ) {
 		if(yyleng <= TOKEN_LENGTH) {
-			strncpy(ttable->TT_value,yytext);
+			strncpy(ttable->TT_Value,yytext,TOKEN_LENGTH+1);
 			ttable->TT_Type = token;
 			ttable->Next = ttable + 1;
 		}

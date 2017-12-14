@@ -2,18 +2,17 @@
 #define TOKEN_H
 
 #define TOKEN_LENGTH 16-1
-/* +  -  *  /  <  <=  >  >=  ==  !=  =  ;  ,  (  )  [  ]  {  } */
-/* \/\*  \*\/ */
-/* if  else  return  void  while */
-/* relop(to deal with signal) */
-/* int(to deal with number) */
+/* +  -  *  /  =  ;  ,  (  )  [  ]  {  } */
+/* if  else  return  while */
+/* id num function */
+/* <  <=  >  >=  ==  !=   */
+/* int void */
 typedef enum {
-	PLUS = 256,MINUS,MULTI,DEVIDE,LT,LE,GT,GE,SAME,NE,EQ,SEMI,COMMA,LB,RB,LSB,RSB,LCB,RCB,
-	LN,RN,
-	IF,ELSE,RETURN,VOID,WHILE,
+	ADDOP = 256,MULOP,EQ,SEMI,COMMA,LB,RB,LSB,RSB,LCB,RCB,
+	IF,ELSE,RETURN,WHILE,
 	ID,NUM,FUNC,
-	RELOP,
-    INT
+    RELOP,
+    VARTYPE
 } TType;
 
 typedef struct Token_Table{
@@ -25,8 +24,11 @@ typedef struct Token_Table{
 
 static void print_token(int token) {
     static char *token_strs[] = {
-        "PLUS","MINUS","MULTI","DEVIDE","LT","LE","GT","GE","SAME","NE","EQ","SEMI","COMMA","LB","RB","LSB","RSB",
-        "LCB","RCB","LN","RN","IF","ELSE","RETURN","VOID","WHILE","ID","NUM","FUNC","RELOP","INT"
+        "ADDOP","MULOP","EQ","SEMI","COMMA","LB","RB","LSB","RSB","LCB","RCB",
+	    "IF","ELSE","RETURN","WHILE",
+	    "ID","NUM","FUNC",
+        "RELOP",
+        "VARTYPE"
     };
     if (token < 255)
         printf("%-20c", token);
