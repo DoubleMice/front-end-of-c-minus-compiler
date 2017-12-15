@@ -35,27 +35,27 @@ comment	"/*"[^"*/"]*"*/"
 
 {addop}			{return ADDOP;}
 {mulop}			{return MULOP;}
+{vartype}		{return VARTYPE;}
 ">="			{return RELOP;}
 "<="			{return RELOP;}
 "=="			{return RELOP;}
 ">"				{return RELOP;}
 "<"				{return RELOP;}
-"="			{return EQ;}
-";"			{return SEMI;}
-","			{return COMMA;}
-"("			{return LB;}
-")"			{return RB;}
-"["			{return LSB;}
-"]"			{return RSB;}
-"{"			{return LCB;}
-"}"			{return RCB;}
+"="			{return '=';}
+";"			{return ';';}
+","			{return ',';}
+"("			{return '(';}
+")"			{return ')';}
+"["			{return '[';}
+"]"			{return ']';}
+"{"			{return '{';}
+"}"			{return '}';}
 
 if      	{return IF;}
 else		{return ELSE;}
 return		{return RETURN;}
 while		{return WHILE;}
 
-{func}		{return FUNC;}
 {id}		{return ID;}
 {number}	{return NUM;}
 %%
@@ -75,7 +75,7 @@ int main(int argc,char *argv[]) {
 	tthead = ttable;
 	// symbolhead = symbol;
 	init_scaner();
-	while(token = yylex()&&(canary < poolsz) ) {
+	while(token = yylex()) {
 		if(yyleng <= TOKEN_LENGTH) {
 			strncpy(ttable->TT_Value,yytext,TOKEN_LENGTH+1);
 			ttable->TT_Type = token;
@@ -85,23 +85,21 @@ int main(int argc,char *argv[]) {
 			printf("token(%s) is too long\n",yytext);
 			return -1;
 		}
-		// switch(token) {
-		// 	case LB:
-		// 		if(last_ttable&&(last_ttable->TT_Type == ID))
-		// 			last_ttable->TT_Type = FUNC;
-		// 		break;
-		// 	case ID:
-		// 		symbol = ST_Add(symbol,yytext,bind,token);
-		// 		break;
-		// 	default:
-		// 		break;
-		// }
-		print_token(token);
-		puts(yytext);
+		switch(token) {
+			case '(':
+				if(last_ttable&&(last_ttable->TT_Type == ID))
+					last_ttable->TT_Type = FUNC;
+				break;
+			default:
+				break;
+		}
 		last_ttable = ttable;
 		ttable += 1;
-		canary = (uint)(&ttable - &tthead);
 	}
+	ttable = tthead;
+	list_token(ttable);
+	memset(tthead,0,poolsz);
+	free(tthead);
 	return 0;
 }
 

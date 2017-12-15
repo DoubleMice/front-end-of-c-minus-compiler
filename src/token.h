@@ -8,7 +8,7 @@
 /* <  <=  >  >=  ==  !=   */
 /* int void */
 typedef enum {
-	ADDOP = 256,MULOP,EQ,SEMI,COMMA,LB,RB,LSB,RSB,LCB,RCB,
+	ADDOP = 256,MULOP,
 	IF,ELSE,RETURN,WHILE,
 	ID,NUM,FUNC,
     RELOP,
@@ -24,7 +24,7 @@ typedef struct Token_Table{
 
 static void print_token(int token) {
     static char *token_strs[] = {
-        "ADDOP","MULOP","EQ","SEMI","COMMA","LB","RB","LSB","RSB","LCB","RCB",
+        "ADDOP","MULOP",
 	    "IF","ELSE","RETURN","WHILE",
 	    "ID","NUM","FUNC",
         "RELOP",
@@ -36,8 +36,12 @@ static void print_token(int token) {
         printf("%-20s",token_strs[token-256]);
 }
 
-// static char *TT_LastFUNC(Token_Table ttable,int token) {
-//     while(Token)
-// }
+static void list_token(Token_Table *tthead) {
+    while((tthead->TT_Type!=0)&&(tthead->Next!=0)) {
+		print_token(tthead->TT_Type);
+		puts(tthead->TT_Value);
+		tthead++;
+	}
+}
 
 #endif
