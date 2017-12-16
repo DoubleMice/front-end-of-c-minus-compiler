@@ -27,3 +27,33 @@ factor -> (expression) | var|call|NUM
 call -> ID(args)
 args -> arg-list | empty
 arg-list -> arg-list,expression|expression
+
+E -> A
+A -> A B|B
+B -> C|E
+C -> D ID;|D ID [NUM];
+D -> int|void
+E -> D ID (F)|G
+F -> H|void
+H -> H,I|I
+I -> D ID | D ID []
+G -> {J K}
+J ->J C|''
+K -> K L|''
+L -> M|G|N|O|P
+M -> Q
+N -> if(Q) L|if(Q) L else L
+O -> while(Q) L
+P -> return ;|return Q
+Q -> var = Q|R
+var -> ID|ID [Q]
+R -> S relop S|S
+relop -> <=|<|>=|==|!=
+S -> S addop term|term
+addop -> +|-
+term -> term mulop V|V
+mulop -> *|/
+V -> (Q) | var|call|NUM
+call -> ID(T)
+T -> U | ''
+U -> U,Q|Q

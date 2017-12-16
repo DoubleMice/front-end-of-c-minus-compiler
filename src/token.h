@@ -7,13 +7,7 @@
 /* id num function */
 /* <  <=  >  >=  ==  !=   */
 /* int void */
-typedef enum {
-	ADDOP = 256,MULOP,
-	IF,ELSE,RETURN,WHILE,
-	ID,NUM,FUNC,
-    RELOP,
-    VARTYPE
-} TType;
+
 
 typedef struct Token_Table{
     int TT_Type;
@@ -24,11 +18,10 @@ typedef struct Token_Table{
 
 static void print_token(int token) {
     static char *token_strs[] = {
-        "ADDOP","MULOP",
 	    "IF","ELSE","RETURN","WHILE",
 	    "ID","NUM","FUNC",
-        "RELOP",
-        "VARTYPE"
+        "LT","LE","GT","GE","NE","EQ",
+        "INT","VOID"
     };
     if (token < 255)
         printf("%-20c", token);
@@ -43,5 +36,9 @@ static void list_token(Token_Table *tthead) {
 		tthead++;
 	}
 }
+
+// static void correct_token(Token_Table *ttable,Token_Table **last_table,int yyleng,int token) {
+
+// }
 
 #endif

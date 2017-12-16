@@ -4,3 +4,4 @@
 exc/*
 src/lex.yy.c
 src/lexer
+example/*
