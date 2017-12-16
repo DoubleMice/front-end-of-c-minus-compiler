@@ -2,11 +2,8 @@
 
 /* manifest constants */
 %{
-	// #include "symbol.h"
-	#include "token.h"
-	#include <memory.h>
+	#define YYSTYPE char*
 	#include "y.tab.h"
-	#define YYSTYPE char *
 	int cur_line = 1;
 	void yyerror(const char *msg);
 	void unrecognized_char(char c);
@@ -78,4 +75,23 @@ int yywrap(void) {return 1;}
 void yyerror(const char *msg) {
     printf("Error at line %d:\n\t%s\n", cur_line, msg);
     // exit(1);
+}
+typedef struct Token_Table{
+    int TT_Type;
+    char padding[8];
+    struct Token_Table *Next;
+    char TT_Value[16];
+} Token_Table;
+
+void print_token(int token) {
+    static char *token_strs[] = {
+	    "IF","ELSE","RETURN","WHILE",
+	    "ID","NUM",
+        "LT","LE","GT","GE","NE","EQ",
+        "INT","VOID"
+    };
+    if (token < 255)
+        printf("%-20c", token);
+    else
+        printf("%-20s",token_strs[token-IF]);
 }
