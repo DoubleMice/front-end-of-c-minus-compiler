@@ -17,7 +17,7 @@
 
 %left '+' '-'
 %left '*' '/'
-
+                                                                                                 
 %start program
 
 %%
@@ -102,11 +102,11 @@ iterationstmt
 
 returnstmt
 	:RETURN ';'
-	|RETURN expression
+	|RETURN expression ';'
 	;
 
 expression
-	:var '=' expression
+	:var '=' expression ';'
 	|simpleexpression
 	;
 
@@ -175,11 +175,11 @@ arglist
 
 int main(int argc,char *argv[]) {
 	int token;
+	yyparse();
 	init_scaner();
 	while(token = yylex()) {
 		print_token(token);
 		puts(yytext);
 	}
-	yyparse();
 	return 0;
 }

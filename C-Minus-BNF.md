@@ -1,32 +1,150 @@
-program -> declaration-list
-declaration-list -> declaration-list declaration|declaration
-declaration -> var-declaration|fun-declaration
-var-declaration -> type-specifier ID;|type-specifier ID [NUM];
-type-specifier -> int|void
-fun-declaration -> type-specifier ID (params)|compound-stmt
-params -> param-list|void
-param-list -> param-list,param|param
-param -> type-specifier ID | type-specifier ID []
-compound-stmt -> {local-declarations statement-list}
-local-declarations ->local-declarations var-declaration|empty
-statement-list -> statement-list statement|empty
-statement -> expression-stmt|compound-stmt|selection-stmt|iteration-stmt|return-stmt
-expression-stmt -> expression
-selection-stmt -> if(expression) statement|if(expression) statement else statement
-iteration-stmt -> while(expression) statement
-return-stmt -> return ;|return expression
-expression -> var = expression|simple-expression
-var -> ID|ID [expression]
-simple-expression -> additive-expression relop additive-expression|additive-expression
-relop -> <=|<|>=|==|!=
-additive-expression -> additive-expression addop term|term
-addop -> +|-
-term -> term mulop factor|factor
-mulop -> *|/
-factor -> (expression) | var|call|NUM
-call -> ID(args)
-args -> arg-list | empty
-arg-list -> arg-list,expression|expression
+program
+	:declarationlist
+	;
+
+declarationlist
+	:declarationlist declaration
+	|declaration
+	;
+
+declaration
+	:vardeclaration
+	|fundeclaration
+	;
+
+vardeclaration
+	:typespecifier ID ';'
+	|typespecifier ID '[' NUM ']' ';'
+	;
+
+typespecifier
+	:INT
+	|VOID
+	;
+
+fundeclaration
+	:typespecifier ID '(' params ')'
+	|compoundstmt
+	;
+
+params
+	:paramlist
+	|VOID
+	;
+
+paramlist
+	:paramlist ',' param
+	|param
+	;
+
+param
+	:typespecifier ID 
+	| typespecifier ID '[' ']'
+	;
+
+compoundstmt
+	:'{' localdeclarations stmtlist '}'
+	;
+
+localdeclarations
+	:localdeclarations vardeclaration
+	|
+	;
+
+stmtlist
+	:stmtlist stmt
+	|
+	;
+
+stmt
+	:expressionstmt
+	|compoundstmt
+	|selectionstmt
+	|iterationstmt
+	|returnstmt
+	;
+
+expressionstmt
+	:expression
+	;
+
+selectionstmt
+	:IF '(' expression ')' stmt
+	|IF '(' expression ')' stmt ELSE stmt
+	;
+
+iterationstmt
+	:WHILE '(' expression ')' stmt
+	;
+
+returnstmt
+	:RETURN ';'
+	|RETURN expression
+	;
+
+expression
+	:var '=' expression
+	|simpleexpression
+	;
+
+var
+	:ID
+	|ID '[' expression ']'
+	;
+
+simpleexpression
+	:additiveexpression relop additiveexpression
+	|additiveexpression
+	;
+
+relop
+	:LE
+	|GT
+	|GE
+	|EQ
+	|NE
+	;
+
+additiveexpression
+	:additiveexpression addop term
+	|term
+	;
+
+addop
+	:'+'
+	|'-'
+	;
+
+term
+	:term mulop factor
+	|factor
+	;
+
+mulop
+	:'*'
+	|'/'
+	;
+
+factor
+	:'(' expression ')' 
+	|var
+	|call
+	|NUM
+	;
+
+call
+	:ID '(' args ')'
+	;
+
+args
+	:arglist 
+	| 
+	;
+
+arglist
+	:arglist ',' expression
+	|expression
+	;
 
 E -> A
 A -> A B|B

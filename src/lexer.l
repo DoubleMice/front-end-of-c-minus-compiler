@@ -11,7 +11,8 @@
 %}
 
 /* regular */
-delim   [ \t\n]
+line    [\n]
+delim   [ \t]
 ws      {delim}+
 letter  [A-Za-z]
 digit   [0-9]
@@ -19,7 +20,7 @@ id      {letter}({letter}|{digit})*
 /* number  {digit}+(\.{digit}+)?(E(+-)?{digit}+)? */
 number  {digit}+
 
-comment	"/*"[^"*/"]*"*/"
+comment	("/*"([^"*/"]*[^\n]*)"*/")
 
 /* match regular */
 /* lex avoids conflict by definition order and matched length */
@@ -27,9 +28,9 @@ comment	"/*"[^"*/"]*"*/"
 /* num && id(with regular) : set symbol table with its val */
 
 %%
-{ws}   		{/* space filter */}
-{comment}	{/* comment filter */}
-
+{ws}   		{}
+{comment}	{}
+{line}      {cur_line++;}
 "+"			{return '+';}
 "-"			{return '-';}
 "*"			{return '*';}
@@ -61,7 +62,6 @@ while		{return WHILE;}
 {id}		{return ID;}
 {number}	{return NUM;}
 
-\n			{cur_line++;}
 %%
 
 
@@ -73,7 +73,7 @@ int yywrap(void) {return 1;}
 
 
 void yyerror(const char *msg) {
-    printf("Error at line %d:\n\t%s\n", cur_line, msg);
+    printf("Error at line %d:\n\t%s:\t%s\n", cur_line, msg, yytext);
     // exit(1);
 }
 typedef struct Token_Table{
