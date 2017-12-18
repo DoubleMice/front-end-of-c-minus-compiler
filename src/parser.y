@@ -88,7 +88,8 @@ stmt
 	;
 
 expressionstmt
-	:expression
+	:expression ';'
+	|';'
 	;
 
 selectionstmt
@@ -106,7 +107,7 @@ returnstmt
 	;
 
 expression
-	:var '=' expression ';'
+	:var '=' expression
 	|simpleexpression
 	;
 
@@ -126,6 +127,8 @@ relop
 	|GE
 	|EQ
 	|NE
+	|'<'
+	|'>'
 	;
 
 additiveexpression
