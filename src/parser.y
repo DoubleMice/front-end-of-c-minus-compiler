@@ -2,7 +2,7 @@
 	#include<stdio.h>
 	#include<stdlib.h>
 	#include<memory.h>
-	#include"ast.h"
+	// #include"ast.h"
 	void yyerror(const char*);
 	#define YYSTYPE char *
 	#define TOKEN_LENGTH 16-1
@@ -108,12 +108,12 @@ returnstmt
 	;
 
 expression
-	:var '=' expression
+	:var '=' expression	
 	|simpleexpression
 	;
 
 var
-	:ID
+	:ID		
 	|ID '[' expression ']'
 	;
 
@@ -156,7 +156,7 @@ factor
 	:'(' expression ')' 
 	|var
 	|call
-	|NUM
+	|NUM	
 	;
 
 call
@@ -179,11 +179,11 @@ arglist
 
 int main(int argc,char *argv[]) {
 	int token;
-	// init_scaner();
-	// while(token = yylex()) {
-	// 	print_token(token);
-	// 	puts(yytext);
-	// }
+	init_scaner();
+	while(token = yylex()) {
+		print_token(token);
+		puts(yytext);
+	}
 	yyparse();
 	return 0;
 }

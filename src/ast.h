@@ -1,8 +1,9 @@
 #ifndef AST_H
 #define AST_H
-#include<string.h>
+#include<string>
 #include<memory.h>
 #include"symbol.h"
+#include<stdlib.h>
 
 
 typedef struct N {
@@ -24,7 +25,7 @@ typedef struct L {
 
 static node *mknode(int op,node *left,node *right)
 {
-    node *p = new(sizeof(node));
+    node *p = new node;
     memset(p,0,sizeof(node));
     p->left = left;
     p->right = right;
@@ -32,9 +33,9 @@ static node *mknode(int op,node *left,node *right)
     return p;
 }
 
-static node *mknode(node *_if,node *condition,node *_else)
+static node *mknode(node *condition,node *_if,node *_else)
 {
-    node *p = new(sizeof(node));
+    node *p = new node;
     memset(p,0,sizeof(node));
     p->condition = condition;
     p->left = _if;
@@ -42,18 +43,18 @@ static node *mknode(node *_if,node *condition,node *_else)
     return p;
 }
 
-static node *mkleaf(int id,char *content)
+static leaf *mkleaf(int id,char *content)
 {
-    leaf *p =new(sizeof(leaf));
+    leaf *p =new leaf;
     memset(p,0,sizeof(leaf));
     p->type = id;
-    strncp(p->content,content,16)
+    strncp(p->content,content,16);
     return p;
 }
 
-static node *mkleaf(int num,int val)
+static leaf *mkleaf(int num,int val)
 {
-    leaf *p = new(sizeof(leaf));
+    leaf *p = new leaf;
     memset(p,0,sizeof(leaf));
     p->type = num;
     p->val = val;

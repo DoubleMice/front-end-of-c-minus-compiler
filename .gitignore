@@ -5,3 +5,5 @@ exc/*
 src/lex.yy.c
 src/lexer
 example/*
+*.doc
+课程设计报告.docx
